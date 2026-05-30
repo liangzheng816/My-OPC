@@ -95,6 +95,12 @@ Four page types — each with an exact HTML structure to follow.
 
 ### Content section pattern
 
+Each content section (`<section>`) renders as a **slide panel** — a card with a
+colored header bar, auto slide number, and padded content body. The HTML structure
+is plain; all visual treatment comes from CSS (see `references/design-system.md §
+Slide Panels`). Do NOT add wrapper divs or extra markup — the CSS selects
+`section:not(#quiz):not(#flashcards)` directly.
+
 ```html
 <section id="{section-slug}">
   <h2>{Section Heading}</h2>
@@ -115,6 +121,21 @@ Four page types — each with an exact HTML structure to follow.
   <pre><code>{example code}</code></pre>
 </section>
 ```
+
+**What the slide panel CSS does automatically:**
+- Wraps the entire section in a card with border, shadow, and rounded corners
+- Renders `<h2>` as a full-width colored header bar (guide color)
+- Prepends an auto-incrementing slide number chip (`01`, `02` … `NN`) via CSS counter
+- Adds horizontal inset padding (`36px`) to all direct child content elements
+- Draws a subtle gradient bottom strip as a visual close
+- Quiz (`#quiz`) and flashcard (`#flashcards`) sections are excluded from slide styling
+
+**Rule:** Every content section in a guide page MUST use this pattern. Do not use
+bare `<div>` wrappers instead of `<section>` — the CSS counter relies on the element
+being a `<section>`.
+
+**Section count guideline:** 4–8 sections per guide. Each section maps to one nav
+entry and one numbered slide.
 
 ### Per-guide quiz (at bottom of guide page)
 

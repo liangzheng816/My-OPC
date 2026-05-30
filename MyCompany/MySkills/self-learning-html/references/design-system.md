@@ -92,6 +92,117 @@ code, .mono {
 
 ---
 
+## Slide Panels (content sections in guide pages)
+
+Each `<section>` element (except `#quiz` and `#flashcards`) renders as a
+PowerPoint-style slide panel. The CSS uses a counter to auto-number slides.
+Copy this block verbatim into every guide page `<style>` tag.
+
+```css
+/* ===== SLIDE PANELS ===== */
+body { counter-reset: slide; }
+
+section:not(#quiz):not(#flashcards) {
+  counter-increment: slide;
+  background: var(--card);
+  border: 1.5px solid color-mix(in srgb, var(--guide-color, var(--slate)) 28%, var(--rule));
+  border-radius: 18px;
+  box-shadow: 0 8px 36px -10px rgba(27,26,23,.18), 0 1px 0 rgba(27,26,23,.04);
+  margin: 48px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Full-width colored header bar */
+section:not(#quiz):not(#flashcards) h2 {
+  margin: 0;
+  padding: 26px 36px 22px;
+  background: var(--guide-color, var(--slate));   /* set --guide-color in :root for each guide */
+  color: #fff;
+  font-family: "Fraunces", serif;
+  font-weight: 900;
+  font-size: clamp(20px, 2.8vw, 26px);
+  letter-spacing: -.015em;
+  line-height: 1.1;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+/* Auto-incrementing slide number chip */
+section:not(#quiz):not(#flashcards) h2::before {
+  content: counter(slide, decimal-leading-zero);
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: .1em;
+  background: rgba(255,255,255,.16);
+  color: rgba(255,255,255,.9);
+  border: 1px solid rgba(255,255,255,.28);
+  padding: 4px 10px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  white-space: nowrap;
+}
+
+/* Horizontal inset for content — direct children only */
+section:not(#quiz):not(#flashcards) > p,
+section:not(#quiz):not(#flashcards) > .insight,
+section:not(#quiz):not(#flashcards) > .misconception,
+section:not(#quiz):not(#flashcards) > blockquote,
+section:not(#quiz):not(#flashcards) > pre {
+  margin-left: 36px;
+  margin-right: 36px;
+}
+
+section:not(#quiz):not(#flashcards) > p:first-of-type { margin-top: 28px; }
+
+section:not(#quiz):not(#flashcards) > p:last-of-type,
+section:not(#quiz):not(#flashcards) > blockquote:last-child,
+section:not(#quiz):not(#flashcards) > .misconception:last-child { margin-bottom: 34px; }
+
+/* Gradient bottom strip */
+section:not(#quiz):not(#flashcards)::after {
+  content: "";
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg,
+    var(--guide-color, var(--slate)) 0%,
+    color-mix(in srgb, var(--guide-color, var(--slate)) 30%, transparent) 100%);
+  margin-top: 34px;
+  opacity: .35;
+}
+/* ===== END SLIDE PANELS ===== */
+```
+
+**Per-guide color wiring:** In each guide's `:root`, set `--guide-color` to the
+guide's accent color so the header bar and border pick it up automatically:
+
+```css
+/* Guide 1 (Foundations) */
+:root { --guide-color: var(--slate); }   /* #2f5d62 */
+
+/* Guide 2 (Applied) */
+:root { --guide-color: var(--amber); }   /* #9a6a00 */
+
+/* Guide 3 (Advanced) */
+:root { --guide-color: var(--accent); }  /* #cc3b1d */
+```
+
+**Responsive:** At ≤680px, reduce header padding and horizontal inset:
+```css
+@media (max-width: 680px) {
+  section:not(#quiz):not(#flashcards) h2 { padding: 20px 22px 18px; font-size: 20px; }
+  section:not(#quiz):not(#flashcards) > p,
+  section:not(#quiz):not(#flashcards) > .insight,
+  section:not(#quiz):not(#flashcards) > .misconception,
+  section:not(#quiz):not(#flashcards) > blockquote { margin-left: 22px; margin-right: 22px; }
+}
+```
+
+---
+
 ## Insight / Misconception Boxes
 
 ```css
