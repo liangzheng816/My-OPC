@@ -1,14 +1,14 @@
 # MySkills
 
-Standalone Claude Code skills. Five "convert anything to clean Markdown" tools from <https://github.com/liangzheng816/StandaloneSkills>, plus two first-party generators (`self-learning-html` and `create-infographics`) that consume markdown and produce richer output.
+Standalone Claude Code skills. Five "convert anything to clean Markdown" tools from <https://github.com/liangzheng816/StandaloneSkills>, plus three first-party tools (`self-learning-html`, `create-infographics`, and `youtube-video-finder`) that consume markdown or user descriptions to produce richer output.
 
 ## Install state
 
 - **Upstream converters (5)** — cloned to `~/.claude/skills/StandaloneSkills/`. Each skill folder is exposed at `~/.claude/skills/<skill>/` via a Windows directory junction (`mklink /J`), so Claude Code discovers `SKILL.md` and the sibling `scripts/`, `prompts/` directories without copying files. Updates: `git pull` in `~/.claude/skills/StandaloneSkills/` updates all 5 in-place.
-- **First-party (2)** — `self-learning-html` and `create-infographics` live in this repo at [`self-learning-html/`](self-learning-html/) and [`create-infographics/`](create-infographics/), each junctioned directly to `~/.claude/skills/<name>`. Edits here are live globally with no copy step. Updates happen by editing this repo, not by `git pull`.
+- **First-party (3)** — `self-learning-html`, `create-infographics`, and `youtube-video-finder` live in this repo at [`self-learning-html/`](self-learning-html/), [`create-infographics/`](create-infographics/), and [`youtube-video-finder/`](youtube-video-finder/), each junctioned directly to `~/.claude/skills/<name>`. Edits here are live globally with no copy step. Updates happen by editing this repo, not by `git pull`.
 - **Project copy of upstream**: this folder also holds a non-junction snapshot of the upstream 5 for in-project browsing — one subdirectory per skill plus [`UPSTREAM_README.md`](UPSTREAM_README.md).
 
-## The 7 skills
+## The 8 skills
 
 | Skill | What it does | Engine |
 | --- | --- | --- |
@@ -17,6 +17,7 @@ Standalone Claude Code skills. Five "convert anything to clean Markdown" tools f
 | [/office-to-markdown](office-to-markdown/SKILL.md) | `.docx` / `.pptx` / `.xlsx` / `.csv` → MD | Microsoft `markitdown` via `uvx`. |
 | [/audio-to-markdown](audio-to-markdown/SKILL.md) | `.mp3` / `.wav` / `.m4a` → transcript MD | `markitdown[audio-transcription]` with SpeechRecognition (Google Web Speech free tier). `ffmpeg` needed for non-PCM-WAV inputs. |
 | [/youtube-to-markdown](youtube-to-markdown/SKILL.md) | YouTube URL → timestamped transcript MD | Bun script, no API key. |
+| [/youtube-video-finder](youtube-video-finder/SKILL.md) | Fuzzy video description → canonical `youtube.com/watch?v=` link | Search-first agent workflow with verification and canonical URL normalization. |
 | [/self-learning-html](self-learning-html/SKILL.md) | Any markdown → interactive HTML learning site (guides + optional quiz + optional flashcards) | Pure agent work driven by `references/{content-schema,page-schemas,design-system,code-patterns}.md`. No script. |
 | [/create-infographics](create-infographics/SKILL.md) | Any markdown → publication-quality infographic image (16:9 / 9:16 / 3:4) | Agent picks a layout (21 options) and applies the executive-saas style by default, then calls the bundled `baoyu-image-gen` (Google Gemini default) to render the PNG. |
 
@@ -72,11 +73,11 @@ visualize this content as a 4-stage maturity arc
 # upstream converters (5)
 cd ~/.claude/skills/StandaloneSkills && git pull
 
-# first-party (self-learning-html, create-infographics)
+# first-party (self-learning-html, create-infographics, youtube-video-finder)
 # edit MyCompany/MySkills/<skill>/ directly — the junctions make edits live globally
 ```
 
-The upstream converters' project copy under `MyCompany/MySkills/` is a frozen snapshot — re-copy from `~/.claude/skills/StandaloneSkills/` if you want it refreshed. The two first-party skills have no snapshot vs. live distinction; the in-repo folders ARE the live skills.
+The upstream converters' project copy under `MyCompany/MySkills/` is a frozen snapshot — re-copy from `~/.claude/skills/StandaloneSkills/` if you want it refreshed. The three first-party skills have no snapshot vs. live distinction; the in-repo folders ARE the live skills.
 
 ## Note on naming
 
